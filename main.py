@@ -1,12 +1,11 @@
+from datasets import load_dataset
 from transformers import pipeline
 import pandas as pd
-from tqdm import tqdm
 
-# Load your CSV file (ensure the file has a 'review' column)
-df = pd.read_csv('Drugs.com.csv')
-reviews = df['comment'].tolist()
+# Load the CSV file as a Hugging Face Dataset (ensure the file contains a "comment" column)
+dataset = load_dataset("csv", data_files="Drugs.com.csv")["train"]
 
-# Define your categories
+# Define the candidate labels for classification
 categories = [
     "Safety",
     "Efficacy",
@@ -19,20 +18,33 @@ categories = [
     "Convenience"
 ]
 
-# Load the zero-shot classification pipeline
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+# Define a dictionary of zero-shot classification models to evaluate
+models = {
+    "bart": "facebook/bart-large-mnli",
+    "deberta": "MoritzLaurer/deberta-v3-large-zeroshot-v2.0-c",
+    "roberta": "MoritzLaurer/roberta-large-zeroshot-v2.0-c",
+    "distilbart": "valhalla/distilbart-mnli-12-1",
+    "xlmroberta": "joeddav/xlm-roberta-large-xnli"
+}
 
-# Perform zero-shot classification
-results = []
-for review in tqdm(reviews):
-    result = classifier(review, candidate_labels=categories)
-    results.append({
-        "review": review,
-        "predicted_category": result['labels'][0],  # Top predicted category
-        "scores": result['scores']                 # Scores for all categories
-    })
+# Define a function to classify a single example with the given model pipeline
+def classify_with_model(example, model_name, classifier):
+    # Use the "comment" field as the input text
+    result = classifier(example["comment"], candidate_labels=categories)
+    # Save the top predicted category and all scores to new columns
+    example[f"predicted_category_{model_name}"] = result["labels"][0]
+    example[f"scores_{model_name}"] = result["scores"]
+    return example
 
-results_df = pd.DataFrame(results)
-print(results_df.head())
+# Loop over each model, process the dataset, and add new classification columns
+for model_name, model_checkpoint in models.items():
+    print(f"Processing model: {model_name}")
+    classifier = pipeline("zero-shot-classification", model=model_checkpoint)
+    dataset = dataset.map(lambda x: classify_with_model(x, model_name, classifier))
 
-results_df.to_csv('classified_reviews.csv', index=False)
+# Preview the first few examples
+print(dataset[:5])
+
+# Optionally, convert the classified dataset to a Pandas DataFrame and save the results as a CSV file
+df = pd.DataFrame(dataset)
+df.to_csv("classified_reviews_multiple_models.csv", index=False)
