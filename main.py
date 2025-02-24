@@ -23,8 +23,7 @@ models = {
     "bart": "facebook/bart-large-mnli",
     "deberta": "MoritzLaurer/deberta-v3-large-zeroshot-v2.0-c",
     "roberta": "MoritzLaurer/roberta-large-zeroshot-v2.0-c",
-    "distilbart": "valhalla/distilbart-mnli-12-1",
-    "xlmroberta": "joeddav/xlm-roberta-large-xnli"
+    "distilbart": "valhalla/distilbart-mnli-12-1"
 }
 
 # Define a function to classify a single example with the given model pipeline
