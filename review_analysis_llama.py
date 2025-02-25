@@ -11,7 +11,6 @@ for drug in drugs:
     df = pd.read_csv(drug)
     data = df.to_json(orient="records")
     print(data[0])
-    print(data)
     
     from langchain_community.chat_models import ChatOllama
     
