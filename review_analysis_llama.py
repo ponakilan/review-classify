@@ -1,5 +1,6 @@
 import json
 import tqdm
+import pandas as pd
 
 drugs = [
     "Ocrevus Processed - ocrevus_reviews_processed_cleaned.csv_classified_reviews_multiple_models.csv",
@@ -47,5 +48,5 @@ for drug in drugs:
         except Exception as e:
             print(f"Error classifying tweet: {e}")
             data[i]["predicted_category_llama"] = "Unknown"
-    
+    data = pd.read_json(data)
     data.to_csv(f"{drug}_classified_llama.csv", index=False)
