@@ -49,5 +49,5 @@ for drug in drugs:
         except Exception as e:
             print(f"Error classifying tweet: {e}")
             data[i]["predicted_category_llama"] = "Unknown"
-    data = pd.read_json(data)
+    data = pd.DataFrame(data)
     data.to_csv(f"{drug}_classified_llama.csv", index=False)
