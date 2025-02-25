@@ -17,7 +17,7 @@ for drug in drugs:
     model = ChatOllama(model="llama3.1:8b", temperature=0)
     
     classify_prompt = """
-    Please classify the following review into one of the following categories: Positive, Negative, or Neutral.
+    Please classify the following review into one of the following categories.
     The output should be strictly in JSON format as shown below:
     "class": "<Safety/Efficacy/Unmet needs/Access to diagnostics & treatment care/Lack of MS disease and symptom awareness/Higher time taken to reach a neurologist/Better alternative/Adherence/patient switchouts/Convenience>"
     Only curly braces should prefix or sufix the above format. No other characters. A review should be classified into only one category.
