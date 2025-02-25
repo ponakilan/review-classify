@@ -9,7 +9,7 @@ drugs = [
 
 for drug in drugs:
     df = pd.read_csv(drug)
-    data = df.to_json(orient="records")
+    data = json.loads(df.to_json(orient="records"))
     print(data[0])
     
     from langchain_community.chat_models import ChatOllama
