@@ -19,7 +19,7 @@ for drug in drugs:
     classify_prompt = """
     Please classify the following review into one of the following categories: Positive, Negative, or Neutral.
     The output should be strictly in JSON format as shown below:
-    {"class": "<Safety/Efficacy/Unmet needs/Access to diagnostics & treatment care/Lack of MS disease and symptom awareness/Higher time taken to reach a neurologist/Better alternative/Adherence/patient switchouts/Convenience>"}
+    "class": "<Safety/Efficacy/Unmet needs/Access to diagnostics & treatment care/Lack of MS disease and symptom awareness/Higher time taken to reach a neurologist/Better alternative/Adherence/patient switchouts/Convenience>"
     Only curly braces should prefix or sufix the above format. No other characters. A review should be classified into only one category.
     
     Review: {review}
