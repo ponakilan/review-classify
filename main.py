@@ -51,4 +51,4 @@ for file in files:
     
     # Optionally, convert the classified dataset to a Pandas DataFrame and save the results as a CSV file
     df = pd.DataFrame(dataset)
-    df.to_csv("classified_reviews_multiple_models.csv", index=False)
+    df.to_csv(f"{file}_classified_reviews_multiple_models.csv", index=False)
