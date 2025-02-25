@@ -18,7 +18,7 @@ for drug in drugs:
     classify_prompt = """
     Please classify the following review into one of the following categories: Positive, Negative, or Neutral.
     The output should be strictly in JSON format as shown below:
-    {"sentiment": "<Safety/Efficacy/Unmet needs/Access to diagnostics & treatment care/Lack of MS disease and symptom awareness/Higher time taken to reach a neurologist/Better alternative/Adherence/patient switchouts/Convenience>"}
+    {"class": "<Safety/Efficacy/Unmet needs/Access to diagnostics & treatment care/Lack of MS disease and symptom awareness/Higher time taken to reach a neurologist/Better alternative/Adherence/patient switchouts/Convenience>"}
     Only curly braces should prefix or sufix the above format. No other characters. A review should be classified into only one category.
     
     Review: {review}
@@ -26,7 +26,7 @@ for drug in drugs:
     
     model_response_list = []
     for i in tqdm.tqdm(range(len(data))):
-        review = data[i]["comment"]
+        review = data[i]["key_points_llama"]
         prompt = classify_prompt.format(review=review)
     
         try:
@@ -36,17 +36,17 @@ for drug in drugs:
     
             try:
                 classification = json.loads(model_response)
-                if all(key in classification for key in ['sentiment']):
-                    data[i]["sentiment"] = classification["sentiment"]
+                if all(key in classification for key in ['class']):
+                    data[i]["predicted_category_llama"] = classification["class"]
                 else:
-                    data[i]["sentiment"] = "Unknown"
+                    data[i]["predicted_category_llama"] = "Unknown"
     
             except json.JSONDecodeError:
                 print(f"Failed to parse JSON: {model_response}")
-                data[i]["sentiment"] = "Unknown"
+                data[i]["predicted_category_llama"] = "Unknown"
     
         except Exception as e:
             print(f"Error classifying tweet: {e}")
-            data[i]["sentiment"] = "Unknown"
+            data[i]["predicted_category_llama"] = "Unknown"
     
     data.to_csv(f"{drug}_classified_llama.csv", index=False)
