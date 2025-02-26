@@ -3,8 +3,7 @@ from transformers import pipeline
 import pandas as pd
 
 files = [
-    "Ocrevus Processed - ocrevus_reviews_processed_cleaned.csv",
-    "Ocrelizumab Processed - ocrelizumab_reviews_processed_cleaned.csv"
+    "to QC drugs.com MS data - Sheet1.csv"
 ]
 
 for file in files:
