@@ -3,8 +3,7 @@ import tqdm
 import pandas as pd
 
 drugs = [
-    "Ocrevus Processed - ocrevus_reviews_processed_cleaned.csv_classified_reviews_multiple_models.csv",
-    "Ocrelizumab Processed - ocrelizumab_reviews_processed_cleaned.csv_classified_reviews_multiple_models.csv"
+    "to QC drugs.com MS data - Sheet1.csv_classified_reviews_multiple_models.csv"
 ]
 
 for drug in drugs:
